@@ -9,6 +9,7 @@
 
 " Add line numbers
 set number
+set relativenumber
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
