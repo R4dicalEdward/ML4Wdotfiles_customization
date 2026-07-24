@@ -1,0 +1,83 @@
+
+# -----------------------------------------------------
+# Qtile
+# -----------------------------------------------------
+alias res1='xrandr --output DisplayPort-0 --mode 2560x1440 --rate 120'
+alias res2='xrandr --output DisplayPort-0 --mode 1920x1080 --rate 120'
+alias setkb='setxkbmap de;echo "Keyboard set back to de."'
+
+# -----------------------------------------------------
+# File Operations
+# -----------------------------------------------------
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='trash -v'
+
+# -----------------------------------------------------
+# Directory Navigation
+# -----------------------------------------------------
+alias home='cd ~'
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias bd='cd "$OLDPWD"'
+
+# -----------------------------------------------------
+# Git Aliases
+# -----------------------------------------------------
+alias gcom='git add . && git commit -m'
+alias lazyg='git add . && git commit -m && git push'
+alias gds='git diff --staged | wl-copy'
+gsr() {
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+    echo "Not inside a Git repository" >&2
+    return 1
+  }
+
+  git ls-files -m -o --exclude-standard -z \
+    | xargs -0 stat -c '%Y %y %n' \
+    | sort -nr \
+    | cut -d' ' -f3-
+}
+
+# -----------------------------------------------------
+# Networking
+# -----------------------------------------------------
+# alias whatismyip='curl -s ifconfig.me'
+# alias openports='netstat -nape --inet'
+
+# -----------------------------------------------------
+# Docker Cleanup
+# -----------------------------------------------------
+alias docker-clean='docker container prune -f && docker image prune -f && docker network prune -f && docker volume prune -f'
+
+# -----------------------------------------------------
+# Miscellaneous
+# -----------------------------------------------------
+alias cls='clear'
+alias ebrc='$EDITOR ~/.bashrc'
+alias ps='ps auxf'
+alias ping='ping -c 10'
+alias less='less -R'
+
+# -----------------------------------------------------
+# Date and Time
+# -----------------------------------------------------
+alias da='date "+%F_%H%M%S"'
+
+# -----------------------------------------------------
+# Archive Operations
+# -----------------------------------------------------
+alias mktar='tar -cvf'
+alias mkbz2='tar -cvjf'
+alias mkgz='tar -cvzf'
+alias untar='tar -xvf'
+alias unbz2='tar -xvjf'
+alias ungz='tar -xvzf'
+
+# -----------------------------------------------------
+# Enhanced cat
+# -----------------------------------------------------
+alias cat='bat'

@@ -1,0 +1,54 @@
+# -----------------------------------------------------
+# History Configuration
+# -----------------------------------------------------
+export HISTFILESIZE=10000
+export HISTSIZE=500
+export HISTTIMEFORMAT="%F %T" # Add timestamp to history
+export HISTCONTROL=erasedups:ignoredups:ignorespace # Avoid duplicates in history
+
+# Check the window size after each command
+shopt -s checkwinsize
+
+# Append history from other sessions
+shopt -s histappend
+PROMPT_COMMAND='history -a'
+
+# -----------------------------------------------------
+# XDG Base Directories
+# -----------------------------------------------------
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# -----------------------------------------------------
+# PATH Configuration
+# -----------------------------------------------------
+export PATH="$HOME/.local/bin:$PATH"
+
+
+# -----------------------------------------------------
+# Electron Wayland Support
+# -----------------------------------------------------
+export ELECTRON_ENABLE_WAYLAND=1
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+
+# -----------------------------------------------------
+# Initialize zoxide
+# -----------------------------------------------------
+eval "$(zoxide init bash)"
+
+# -----------------------------------------------------
+# Initialize uv
+# -----------------------------------------------------
+eval "$(uv generate-shell-completion bash)"
+eval "$(uvx --generate-shell-completion bash)"
+
+# -----------------------------------------------------
+# Spack setup
+# -----------------------------------------------------
+export SPACK_ROOT="$HOME/Projects/work/ZIH/repos/spack"
+if [[ -d "$SPACK_ROOT" ]] && [[ "$PWD" == *spack* ]]; then
+    source "$SPACK_ROOT/share/spack/setup-env.sh"
+fi
+alias spack-on="source $SPACK_ROOT/share/spack/setup-env.sh"
