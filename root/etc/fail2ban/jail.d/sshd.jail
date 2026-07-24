@@ -1,0 +1,17 @@
+[sshd]
+enabled = true
+
+# Keeps matching robust; "aggressive" catches more patterns but can increase false positives
+mode = normal
+
+# Use journald filters to avoid scanning the entire journal
+journalmatch = _SYSTEMD_UNIT=sshd.service
+
+# IMPORTANT for roaming zones:
+# Put bans into the zone where SSH is exposed.
+# If you only ever open SSH on public (recommended), keep zone=public:
+action = firewallcmd-rich-rules[zone=public]
+
+# If you sometimes expose SSH on home instead, switch to zone=home for that scenario:
+# action = firewallcmd-rich-rules[zone=home]
+

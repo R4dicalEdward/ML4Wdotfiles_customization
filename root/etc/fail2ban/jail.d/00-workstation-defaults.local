@@ -1,0 +1,19 @@
+[DEFAULT]
+# Journald is the cleanest log source on modern Arch
+backend = systemd
+
+# Correct with firewalld when nftables backend is in use
+banaction = firewallcmd-rich-rules
+
+# Laptop-friendly tuning: avoids long self-lockouts but still punishes brute force
+findtime = 10m
+maxretry = 5
+bantime  = 30m
+
+# Escalate bans for repeat offenders without going "permanent ban" crazy
+bantime.increment = true
+bantime.factor = 2
+bantime.maxtime = 1d
+
+# Always ignore local machine
+ignoreip = 127.0.0.1/8 ::1
