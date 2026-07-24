@@ -1,0 +1,32 @@
+//  __  __           _       _
+// |  \/  | ___   __| |_   _| | ___  ___
+// | |\/| |/ _ \ / _` | | | | |/ _ \/ __|
+// | |  | | (_) | (_| | |_| | |  __/\__ \
+// |_|  |_|\___/ \__,_|\__,_|_|\___||___/
+//
+//
+{
+ 
+  // "custom/pomodoro": {
+  //   "format": "{text}",
+  //   "return-type": "json",
+  //   // Choose one of the following as your timer backend:
+  //   // "exec": "tomat status",
+  //   // "exec": "pomodoro-cli status --format json --time-format digital",
+  //   "exec": "tomat status",
+  //   "interval": 1,
+  //   "tooltip": true,
+  //   "on-click": "tomat toggle",
+  //   "on-click-middle": "tomat skip",
+  //   "on-click-right": "tomat reset"
+  // }
+"custom/pomo": {
+    "format": " 🍅  {}",
+    "exec": "pomodoro-cli status --format json --time-format digital",
+    "return-type": "json",
+    "on-click": "pomodoro-cli start --add 5m --notify",
+    "on-click-middle": "pomodoro-cli pause",
+    "on-click-right": "pomodoro-cli stop",
+    "interval": 1
+}
+}
