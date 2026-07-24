@@ -1,0 +1,86 @@
+[core]
+	excludesfile = /home/ahoffmann/.gitignore_global
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    # --- Layout ---
+    side-by-side = true
+    # Shows old and new file next to each other. Far more readable than
+    # unified diffs for most changes. Disable on narrow terminals.
+
+    line-numbers = true
+    # Adds line numbers to both the old and new sides. Essential for
+    # navigating to the right spot in your editor.
+
+    navigate = true
+    # Enables n/N to jump between diff sections (files/hunks) while paging.
+    # Makes reviewing multi-file diffs much faster.
+
+    # --- Appearance ---
+    syntax-theme = Catppuccin Mocha 
+    # Great dark theme. Other excellent choices:
+    #   - "Dracula"         → popular, high contrast
+    #   - "OneHalfDark"     → softer, easy on eyes
+    #   - "GitHub"          → if you prefer light themes
+    #   - "ansi"            → respects terminal colors (best for portability)
+    # List all available: delta --list-syntax-themes
+
+    true-color = always
+    # Use 24-bit color. If your terminal doesn't support it, use "auto".
+
+    hyperlinks = true
+    # Makes file paths in the header clickable in supported terminals
+    # (e.g., iTerm2, Kitty, WezTerm). Opens the file directly.
+
+    # --- Diff Quality ---
+    diff-so-fancy = false
+    # Keep this false. diff-so-fancy mode is a legacy style — delta's
+    # native rendering is superior.
+
+    wrap-max-lines = 2
+    # Long lines wrap instead of truncating. "2" means up to 2 wrap lines
+    # before truncating. Set to "unlimited" if you prefer no truncation.
+
+    tabs = 4
+    # Render tab characters as 4 spaces in diffs.
+
+    # --- Blame ---
+    blame-code-style = syntax
+    # Syntax-highlight code in `git blame` output too.
+
+    blame-format = "{author:<18} {commit:<8} {timestamp:<13}"
+    # Compact, readable blame format.
+
+    blame-palette = "#1e1e2e #181825 #11111b"
+    # Alternating row background colors for blame (Catppuccin shades).
+    # Makes it much easier to visually group lines by commit.
+
+    # --- Merge conflicts ---
+    merge-conflict-begin-symbol = ▼
+    merge-conflict-end-symbol   = ▲
+    merge-conflict-ours-style   = "bold red"
+    merge-conflict-theirs-style = "bold blue"
+    # Makes merge conflicts immediately visually obvious and which
+    # side is which at a glance.
+
+    # --- Word-level diffing ---
+    word-diff-regex = \\S+
+    # Highlights changed words within a line, not just the whole line.
+    # \\S+ means "any non-whitespace sequence" — works well for most code.
+    # Alternative: use "[A-Za-z0-9]+" for pure identifier-level diffing.
+[alias]
+  st     = status -sb
+  lg     = log --oneline --graph --decorate --all
+[merge]
+    conflictstyle = zdiff3
+    # Adds a "base" section to merge conflicts showing the common ancestor.
+    # With delta's conflict styling, this gives you full context to resolve
+    # conflicts without opening a separate mergetool.
+[init]
+	defaultBranch = main
+[user]
+	email = aaron.hoffmann1@tu-dresden.de
+	name = Aaron Hoffmann
