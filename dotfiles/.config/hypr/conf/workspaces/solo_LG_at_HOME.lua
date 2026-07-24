@@ -25,3 +25,7 @@ hl.workspace_rule({ workspace = "10", monitor = "eDP-1" })
 -- Group 6
 hl.workspace_rule({ workspace = "11", monitor = "HDMI-A-1" })
 hl.workspace_rule({ workspace = "12", monitor = "eDP-1" })
+
+-- Group 90
+hl.workspace_rule({ workspace = "91", monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "92", monitor = "eDP-1" })

@@ -20,3 +20,7 @@ hl.window_rule({ match = { class = "Spotify" },                 workspace = "8" 
 
 -- 5th group: secondary browser
 hl.window_rule({ match = { class = "chromium" },                workspace = "10" })
+
+-- 90th group: VDI
+hl.window_rule({ match = { class = "Wfica" },                workspace = "91" })
+hl.window_rule({ match = { class = "conncenter" },                workspace = "92" })
