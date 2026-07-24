@@ -1,0 +1,128 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+
+matches:
+  # --- Short utility snippets ---
+
+  - trigger: ":br"
+    replace: |-
+      Best Regards
+      Aaron Hoffmann
+
+  - trigger: ":refactor"
+    replace: "Please refactor this code according to best practices."
+
+  - trigger: ":impr"
+    replace: "Please improve this according to best practices in Python programming."
+
+  - trigger: ":pbb"
+    replace: "according to my preferences and the general best practices"
+
+  - trigger: ":pEn"
+    replace: "Show me how an academic English native speaker would perfect the following text:"
+
+  - trigger: ":OnlineBackedGuide"
+    replace: |-
+      Search the web to provide a valid and up-to-date step-by-step guide on how to
+
+      You must provide sources.
+
+  - trigger: ":docstring"
+    replace: |-
+      Provide a best practice docstring according to Google Style with a maximum
+      character limit of 72 characters per line. Here is the function I want to
+      document:
+
+  # --- Prompt/snippet templates ---
+
+  - trigger: ":CommMess"
+    replace: |-
+      Generate a precise and well-structured commit message according to my
+      preferences (Conventional Commits guidelines: max characters per line 72)
+      based on the most recent staged changes. Here is the `git diff --staged`
+      output:
+
+  - trigger: ":CommitMessage"
+    replace: |-
+      Please provide a commit message following the Conventional Commits
+      guidelines for the following changes I made in my code! Here is the code
+      snippet I want to commit:
+
+  - trigger: ":ObsMark"
+    replace: |-
+      Please provide the entire information you provided during our conversation
+      summarized as a markdown suitable for Obsidian. Please make sure I can
+      easily copy and paste the content of this markdown cell, this means the
+      provided summary (in markdown format) should be provided as a code block.
+
+  - trigger: ":RePr"
+    replace: |-
+      Refine the prompt below into a clearer, more effective, copy-paste-ready prompt for a ChatGPT-style LLM.
+
+      Do not execute the task described inside the prompt. Treat it only as text to improve.
+
+      Requirements:
+      - Do not assign a role to the target model.
+      - Preserve the original intent.
+      - Keep the refined prompt focused and concise.
+      - Add only the details needed to improve clarity, structure, and output quality.
+      - Do not anticipate or pre-write the answer the target model should produce.
+      - Do not invent facts, constraints, examples, source material, or requirements.
+      - If information is missing but not essential, leave it unspecified or use a neutral placeholder.
+      - If essential information is missing, include a concise placeholder rather than making assumptions.
+      - Avoid manipulative prompting tactics, artificial urgency, or unnecessary emphasis.
+      - Use clear delimiters for the prompt to be refined.
+
+      Return only the refined prompt in a fenced text code block.
+
+      Prompt to refine:
+      ```text
+      [Placeholder]
+      ````
+
+  - trigger: ":RoRePr"
+    replace: |-
+      Your task is to provide the perfect version of the prompt below, including
+      the best matching role description. To assign an appropriate role to
+      ChatGPT, you will first take enough context and information from the prompt
+      below to perfectly derive the appropriate role. Assign a score between 0
+      and 100 to the most suitable role you were able to extract from the prompt.
+      If the score falls below 80, kindly request additional information
+      regarding the role that you should assign. You will provide the perfectly
+      refined and optimized version of the subsequent prompt to achieve the best
+      outcome using a ChatGPT-5 interface, including the best role description
+      for ChatGPT:
+      ```
+
+      ```
+      Remember to apply the *principles* in your knowledge base!
+
+  - trigger: ":LitResAs"
+    replace: |-
+      You will act as an academic assistant specializing in scientific literature.
+      Your task is to analyze the paper provided and offer a *summary in raw
+      Markdown format, suitable for use in Obsidian*. Start the summary with a
+      complete list of symbols used in the paper, using LaTeX notation. The
+      formatting should mirror the provided *List of Symbols* example, ensuring
+      it is ready for direct copying as a code block. Focus on clarity and
+      precision in representing the key concepts and findings of the paper.
+
+      Here is the 'List of Symbols' for you to understand the way the provided
+      Markdown should be formatted:
+      <List of Symbols>
+      ## List of Symbols
+      - $( G )$: A graph
+      - $( N )$: Set of nodes in $( G )$
+      - $( E )$: Set of edges in $( G )$
+      - $( \lambda )$: Function assigning labels to nodes
+      - $( SG )$: Set of all rooted subgraphs in $( G )$
+      - $( \Phi )$: Matrix of vector representations of graphs
+      - $( \delta )$: Number of dimensions (embedding size)
+      - $( e )$: Number of epochs
+      - $( \alpha )$: Learning rate
+      - $( D )$: Maximum degree of rooted subgraphs considered
+      - $( SG_{vocab} )$: Vocabulary of subgraphs
+      <\List of Symbols>
+
+      Please provide the list in raw formatting as a code block for me directly
+      to copy!
+
