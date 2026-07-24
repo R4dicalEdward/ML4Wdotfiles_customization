@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Element Desktop
+Exec=element-desktop
+Icon=element-desktop
+Comment=Start Element Matrix client on login
+X-GNOME-Autostart-enabled=true
+Terminal=false

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Evolution
+Exec=evolution
+Icon=evolution
+Comment=Start Evolution on login
+X-GNOME-Autostart-enabled=true
+Terminal=false
+
