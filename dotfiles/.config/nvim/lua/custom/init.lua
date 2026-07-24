@@ -1,0 +1,1 @@
+require('custom.commit-msg-config')
