@@ -1,55 +1,72 @@
-# ML4W OS - Dotfiles for Hyprland
+# ml4w-custom-dotfiles
 
-An advanced configuration of Hyprland for Arch Linux based distributions, Fedora and openSuse Tumbleweed. 
+Production dotfiles for my current Hyprland/Wayland workstation.
 
-Full featured desktop environment based on the dynamic tiling window manager Hyprland with adaptive material color themes based on the selected wallpaper for all components. Including a comprehensive selection of apps with the ability to customize the configuration to your personal needs.
+This repository is a customized ML4W dotfiles source. It combines the upstream
+[ML4W Dotfiles for Hyprland](https://github.com/mylinuxforwork/dotfiles) with
+committed personal workstation customizations, so it should not be treated as a
+pristine upstream mirror.
 
-<img width="2560" height="1440" alt="image" src="https://ml4w.com/os/screen-215.jpg" />
+The older `personal_dotfiles` repository is now historical/reference material.
+Personal user-level customizations that are part of the active desktop profile
+belong directly in this repository.
 
-## Installation and Documentation
+## Repository Map
 
-You can find all installation options in the documentation of the ML4W OS for Hyprland here:<br><b>https://ml4w.com/os/</b>
+- `dotfiles/`: user-level configuration installed through the ML4W Dotfiles Installer.
+- `hyprland-local.dotinst`: local installer profile for this checkout.
+- `setup/`: inherited ML4W setup material; review before installer execution.
+- `root/`: system/root configuration, separate from normal user dotfiles installation.
+- `hyprland-dotfiles*.dotinst`: upstream, stable, and local profile metadata.
 
-### Quick Installation
+## Local Install Workflow
 
-Copy one of the following commands into your terminal:
+Use local files only. Do not install this customized profile from GitHub, a
+remote `.dotinst` URL, or a `curl | bash` command.
 
-```sh
-bash <(curl -s https://ml4w.com/os/stable) # Stable Release
+From this repository, the local installer command is:
+
+```bash
+ml4w-dotfiles-installer --install ./hyprland-local.dotinst
 ```
 
-```sh
-bash <(curl -s https://ml4w.com/os/rolling) # Rolling Release (only Hyprland 0.55.x)
+Running the installer can modify `$HOME`, create or replace symlinks, restore
+selected files, and execute setup or migration behavior. Before running it,
+review:
+
+- `hyprland-local.dotinst`
+- current backup state under the installer profile
+- existing files in target locations under `$HOME`
+- high-risk paths that need a separate deployment plan
+
+The local profile uses `subfolder: "dotfiles"`, so the normal user dotfiles
+workflow is limited to the `dotfiles/` tree. Root/system configuration remains
+out of scope for this workflow.
+
+## Maintenance
+
+Keep custom changes committed directly in this repository. Preserve upstream
+ML4W structure where practical so future upstream comparisons and updates remain
+understandable.
+
+Use full Conventional Commit messages for new commits: a Conventional Commit
+subject, a blank line, and a body explaining what changed and why.
+
+Do not include broad high-risk paths in ordinary user-level installer deployment
+unless a separate plan explicitly approves them:
+
+- `dotfiles/.local/`
+- `dotfiles/.config/systemd/`
+- `root/`
+
+Treat `root/` and service configuration as sensitive. Inspect file names only
+unless content review is explicitly approved.
+
+## Upstream Credits
+
+This repository builds on the ML4W OS and ML4W Dotfiles for Hyprland project by
+Stephan Raabe and contributors. Upstream documentation remains available at:
+
+```text
+https://ml4w.com/os/
 ```
-Arch, Fedora and openSuse Tumbleweed are directly supported.
-
-### Test and install with the ML4W OS Live ISO
-
-Test the ML4W OS without risk on your computer or in a Virtual Machine with the ML4W Live ISO.
-
-<a href="https://ml4w.com/iso/ml4w-os/ml4w-os-2.15-x86_64.iso">Download the ML4W ISO</a>
-
-You can install the ML4W OS on your hard drive with the command `sudo install-ml4w-os` (BETA).
-
-## Special Thanks
-
-I want to say thank you to all contributors of the ML4W OS and all other Developers who are creating awesome configurations for our favorite Tiling Window Manager Hyprland. Your support, the testing of every version and all your valuable Pull Requests with improvements and bug fixes have repeatedly improved the overall project and increased its relevance and quality.
-
-Special Thanks do to...
-
-https://github.com/Affanmm for the great and professional ML4W Logo Design and much more.
-https://github.com/harilvfs for supporting me in creating the new Wiki https://ml4w.com/os/
-https://github.com/dwilliam62 for all your support and testings since the start of the Project
-and so many more...
-
-## Inspirations
-
-The following projects have inspired me:
-
-- https://github.com/JaKooLit/Hyprland-Dots
-- https://github.com/prasanthrangan/hyprdots
-- https://github.com/sudo-harun/dotfiles
-- https://github.com/dianaw353/hyprland-configuration-rootfs
-- https://www.youtube.com/@saneAspect
-
-and many more...
