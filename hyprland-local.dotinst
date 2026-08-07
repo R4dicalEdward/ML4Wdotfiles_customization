@@ -6,7 +6,7 @@
   "author": "Stephan Raabe",
   "homepage": "https://ml4w.com/os/",
   "dependencies": "https://ml4w.com/os/getting-started/dependencies",
-  "source": "$HOME/Projects/dotfiles/dotfile-reworkd-for-dotfile-installer/upstream-ML4W_dotfiles/",
+  "source": "$HOME/Projects/dotfiles/dotfile-reworkd-for-dotfile-installer/ml4w-custom-dotfiles/",
   "subfolder": "dotfiles",
   "restore": [
     {
@@ -14,6 +14,11 @@
       "source": ".config/hypr/conf/custom.lua",
       "value": true
     },
+    {
+			"title":"VS Code",
+			"source":".config/Code",
+			"value":true
+		},
     {
       "title": "ML4W OS Settings",
       "source": ".config/ml4w/settings",
