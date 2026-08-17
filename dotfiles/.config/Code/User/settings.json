@@ -1,0 +1,302 @@
+{
+    "telemetry.telemetryLevel": "off",
+    "window.customTitleBarVisibility": "auto",
+    "editor.fontFamily": "FiraCode Nerd Font Mono",
+    "editor.fontLigatures": true,
+    "editor.lineNumbers": "relative",
+    "editor.wordWrap": "on",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "workbench.panel.defaultLocation": "bottom",
+    "debug.internalConsoleOptions": "openOnSessionStart",
+    "git.ignoreLegacyWarning": true,
+    "remote.SSH.enableRemoteCommand": true,
+    "remote.SSH.useLocalServer": true,
+    "remote.SSH.remoteServerListenOnSocket": false,
+    "remote.SSH.localServerDownload": "auto",
+    "remote.SSH.connectTimeout": 30,
+    "remote.SSH.serverInstallPath": {
+        "StAr_login_node": "/bigwork/nhkcaaho/.vscode-remote/VS_Code_full1",
+        "phdgpu-n001": "/bigwork/nhkffuma/.vscode-remote/host",
+        "AM-HX-GraphNet~login_node": "/bigwork/nhkcaaho/.vscode-remote/singularity",
+        "AM-HX-GraphNet~vis": "/bigwork/nhkcaaho/.vscode-remote/singularity",
+        "login_node": "/bigwork/nhkffuma/.vscode-remote/host",
+        "TRANS": "/bigwork/nhkffuma/.vscode-remote/host",
+        "AM-HX-GraphNet~phdgpu": "/bigwork/nhkcaaho/.vscode-remote/singularity",
+        "p4d": "/bigwork/nhkcaaho/.vscode-remote/singularity",
+    },
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 88,
+    },
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.inlayHints.variableTypes": false,
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.useLibraryCodeForTypes": true,
+    "extensions.autoUpdate": "on",
+    "terminal.integrated.inheritEnv": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "remote.SSH.remotePlatform": {
+        "login_node": "linux",
+        "smp-n005": "linux"
+    },
+    "gitlab.customQueries": [
+        {
+            "name": "Issues assigned to me",
+            "type": "issues",
+            "scope": "assigned_to_me",
+            "state": "opened",
+            "noItemText": "There is no issue assigned to you."
+        },
+        {
+            "name": "Issues created by me",
+            "type": "issues",
+            "scope": "created_by_me",
+            "state": "opened",
+            "noItemText": "There is no issue created by you."
+        },
+        {
+            "name": "Merge requests assigned to me",
+            "type": "merge_requests",
+            "scope": "assigned_to_me",
+            "state": "opened",
+            "noItemText": "There is no MR assigned to you."
+        },
+        {
+            "name": "Merge requests I'm reviewing",
+            "type": "merge_requests",
+            "reviewer": "<current_user>",
+            "state": "opened",
+            "noItemText": "There is no MR for you to review."
+        },
+        {
+            "name": "Merge requests created by me",
+            "type": "merge_requests",
+            "scope": "created_by_me",
+            "state": "opened",
+            "noItemText": "There is no MR created by you."
+        },
+        {
+            "name": "All project merge requests",
+            "type": "merge_requests",
+            "scope": "all",
+            "state": "opened",
+            "noItemText": "The project has no merge requests"
+        }
+    ],
+    "todo-tree.highlights.useColourScheme": false,
+    "todo-tree.highlights.defaultHighlight": {
+        "icon": "alert",
+        "type": "text-and-comment",
+        "foreground": "#000000",
+        "background": "#FFFFFF",
+        "opacity": 50,
+        "iconColour": "#0000FF",
+        "gutterIcon": true
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "icon": "check",
+            "foreground": "#000000",
+            "background": "#efef85",
+            "iconColour": "#FFFF00"
+        },
+        "NOTE": {
+            "icon": "note",
+            "foreground": "#FFFFFF",
+            "background": "#6495ED",
+            "iconColour": "#6495ED"
+        },
+        "USEFUL": {
+            "icon": "note",
+            "foreground": "#000000",
+            "background": "#66CDAA",
+            "iconColour": "#66CDAA"
+        },
+        "COMMENT": {
+            "icon": "note",
+            "foreground": "#FFFFFF",
+            "background": "#808080",
+            "iconColour": "#808080"
+        },
+        "LEARN": {
+            "icon": "note",
+            "foreground": "#FFFFFF",
+            "background": "#FF69B4",
+            "iconColour": "#FF69B4"
+        },
+        "FIXME": {
+            "foreground": "#DC143C",
+            "background": "#DEB887",
+            "iconColour": "#DEB887"
+        },
+        "BUG": {
+            "foreground": "#FFFFFF",
+            "background": "#DC143C",
+            "iconColour": "#DC143C"
+        },
+        "SEE NOTES": {
+            "icon": "check",
+            "foreground": "#FFFFFF",
+            "background": "#008080",
+            "iconColour": "#008080"
+        },
+        "POST": {
+            "icon": "check",
+            "foreground": "#FFFFFF",
+            "background": "#008000",
+            "iconColour": "#008000"
+        },
+        "DEBUG": {
+            "icon": "squirrel",
+            "foreground": "#C586C0",
+            "background": "#3B3B3B",
+            "iconColour": "#C586C0"
+        },
+        "[ ]": {
+            "icon": "check",
+            "foreground": "#000000",
+            "background": "#FFFFFF",
+            "iconColour": "#FFFF00"
+        },
+        "[x]": {
+            "icon": "check",
+            "foreground": "#FFFFFF",
+            "background": "#008000",
+            "iconColour": "#008000"
+        }
+    },
+    "todo-tree.general.tags": [
+        "BUG",
+        "SEE NOTES",
+        "HACK",
+        "FIXME",
+        "RECHECK",
+        "INCOMPLETE",
+        "TODO",
+        "NOTE",
+        "POST",
+        "USEFUL",
+        "LEARN",
+        "COMMENT",
+        "DEBUG",
+        "[ ]",
+        "[x]"
+    ],
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|%|^|^\\s*(-|\\d+.))\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*",
+    // default: "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+    "github.copilot.editor.enableAutoCompletions": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.codeLens": true,
+    "python.defaultInterpreterPath": "/home/aaron/.pyenv/versions/3.10.14/envs/AM-HX-GraphNet/bin/python",
+    // "python.defaultInterpreterPath": "/home/aaron/.pyenv/versions/3.10.14/envs/AM-HX-GraphNet/bin/python",
+    // "[latex]": {
+    //     "editor.formatOnSave": true
+    // },
+    // "latex-workshop.latexindent.path": "/usr/local/texlive/2024/bin/x86_64-linux/latexindent",
+    "latex-workshop.latexindent.args": [
+        "-c",
+        "%DIR%/",
+        "-y=defaultIndent:'    '"
+    ],
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.message.convertFilenameEncoding": true,
+    "latex-workshop.bind.altKeymap.enabled": true,
+    "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        },
+        {
+            "name": "latexmk (latexmkrc)",
+            "tools": [
+                "latexmk_rconly"
+            ]
+        },
+        {
+            "name": "latexmk (lualatex)",
+            "tools": [
+                "lualatexmk"
+            ]
+        },
+        {
+            "name": "latexmk (xelatex)",
+            "tools": [
+                "xelatexmk"
+            ]
+        },
+        {
+            "name": "pdflatex -> bibtex -> pdflatex * 2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "Compile Rnw files",
+            "tools": [
+                "rnw2tex",
+                "latexmk"
+            ]
+        },
+        {
+            "name": "Compile Jnw files",
+            "tools": [
+                "jnw2tex",
+                "latexmk"
+            ]
+        },
+        {
+            "name": "Compile Pnw files",
+            "tools": [
+                "pnw2tex",
+                "latexmk"
+            ]
+        },
+        {
+            "name": "tectonic",
+            "tools": [
+                "tectonic"
+            ]
+        }
+    ],
+    // --- Workspace security boundary ---
+    "security.workspace.trust.untrustedFiles": "open",
+
+    // --- Core Copilot enablement ---
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+
+    // --- Workspace-aware intelligence (CRITICAL) ---
+    "chat.agent.enabled": true,
+    "github.copilot.chat.codesearch.enabled": true,
+
+    // --- Controlled agent behavior ---
+    "github.copilot.chat.cloudAgent.enabled": false,
+    "github.copilot.chat.claudeAgent.enabled": false,
+
+    // --- Predictive editing (optional but useful) ---
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.initialPermissionMode": "plan",
+
+    // --- Additional hardening (recommended) ---
+    "chat.tools.autoApprove": false,
+    "chat.agent.maxRequests": 20,
+    "chat.agent.sandbox.enabled": "allowNetwork",
+    "chat.viewSessions.orientation": "stacked"
+}
