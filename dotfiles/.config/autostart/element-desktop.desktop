@@ -4,5 +4,6 @@ Name=Element Desktop
 Exec=element-desktop
 Icon=element-desktop
 Comment=Start Element Matrix client on login
-X-GNOME-Autostart-enabled=true
 Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
