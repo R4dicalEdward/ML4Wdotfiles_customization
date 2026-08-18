@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=KeePassXC
+Comment=Start KeePassXC at session login
+Exec=/usr/bin/keepassxc
+TryExec=/usr/bin/keepassxc
+Icon=keepassxc
+Terminal=false
+StartupNotify=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
