@@ -7,7 +7,7 @@ hl.window_rule({ match = { class = "code" },                    workspace = "1" 
 hl.window_rule({ match = { class = "firefox" },                 workspace = "2" })
 
 -- 2nd group: notes + secrets
-hl.window_rule({ match = { class = "obsidian" },                workspace = "3" })
+hl.window_rule({ match = { class = "md.obsidian.Obsidian" },    workspace = "3" })
 hl.window_rule({ match = { class = "org.keepassxc.KeePassXC" }, workspace = "4" })
 
 -- 3rd group: research + comms
@@ -22,5 +22,5 @@ hl.window_rule({ match = { class = "Spotify" },                 workspace = "8" 
 hl.window_rule({ match = { class = "chromium" },                workspace = "10" })
 
 -- 90th group: VDI
-hl.window_rule({ match = { class = "Wfica" },                workspace = "91" })
-hl.window_rule({ match = { class = "conncenter" },                workspace = "92" })
+hl.window_rule({ match = { class = "Wfica" },                   workspace = "91" })
+hl.window_rule({ match = { class = "conncenter" },              workspace = "92" })
