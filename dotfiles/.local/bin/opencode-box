@@ -1,146 +1,53 @@
 #!/usr/bin/env bash
-# opencode-box — minimal bwrap wrapper for opencode
-# Audit this file. Do not pipe-install from the internet.
-# Version: local — you own this.
-
+# opencode-box — minimal, auditable bwrap wrapper for OpenCode. You own this file.
 set -euo pipefail
-
-# ── Prerequisites ────────────────────────────────────────────────────────────
-command -v bwrap    >/dev/null || { echo "bwrap not found (pacman -S bubblewrap)" >&2; exit 1; }
+command -v bwrap    >/dev/null || { echo "install bubblewrap" >&2; exit 1; }
 command -v opencode >/dev/null || { echo "opencode not in PATH" >&2; exit 1; }
 
-OPENCODE_BIN="$(command -v opencode)"
-OPENCODE_DIR="$(dirname "$OPENCODE_BIN")"
+OPENCODE_DIR="$(dirname "$(command -v opencode)")"
 PROJECT_DIR="$(realpath "$PWD")"
 
-# ── Safety checks ─────────────────────────────────────────────────────────────
-is_sensitive() {
-  local p="$1"
-  [[ "$p" == "$HOME" || "$p" == "$HOME/.ssh"   || "$p" == "$HOME/.ssh/"*   || \
-                         "$p" == "$HOME/.gnupg" || "$p" == "$HOME/.gnupg/"* || \
-                         "$p" == "/" || "$HOME" == "$p"/* ]]
-}
-
-is_sensitive "$PROJECT_DIR" && {
-  echo "Error: run from a project directory, not $HOME or sensitive ancestors." >&2; exit 1
-}
-
-if [[ -d "$HOME/.ssh" && ! -L "$HOME/.ssh" ]]; then
-  [[ "$(stat -c '%a' "$HOME/.ssh")" != "700" ]] && {
-    echo "Error: $HOME/.ssh must be 0700. Run: chmod 700 ~/.ssh" >&2; exit 1
-  }
+case "$PROJECT_DIR" in
+  "$HOME"|"$HOME/.ssh"*|"$HOME/.gnupg"*|"/")
+    echo "Run from a project subdirectory, not \$HOME." >&2; exit 1;;
+esac
+if [[ -d "$HOME/.ssh" && ! -L "$HOME/.ssh" && "$(stat -c %a "$HOME/.ssh")" != 700 ]]; then
+  echo "chmod 700 ~/.ssh first." >&2; exit 1
 fi
 
-# ── Synthetic /etc files (getpwuid, group lookups) ───────────────────────────
-exec {PASSWD_FD}< <(printf '%s:x:%d:%d::%s:/bin/bash\n' \
-  "$(id -un)" "$(id -u)" "$(id -g)" "$HOME")
-exec {GROUP_FD}< <(printf '%s:x:%d:\n' "$(id -gn)" "$(id -g)")
+exec {PW}< <(printf '%s:x:%d:%d::%s:/bin/bash\n' "$(id -un)" "$(id -u)" "$(id -g)" "$HOME")
+exec {GR}< <(printf '%s:x:%d:\n' "$(id -gn)" "$(id -g)")
+RESOLV="$(realpath /etc/resolv.conf 2>/dev/null || echo /etc/resolv.conf)"
+mkdir -p "$HOME/.config/opencode" "$HOME/.local/share/opencode" "$HOME/.cache/opencode"
 
-# ── Resolve /etc/resolv.conf (handles systemd-resolved symlink on Arch) ───────
-RESOLV_SRC="$(realpath /etc/resolv.conf 2>/dev/null || echo /etc/resolv.conf)"
-
-# ── Ensure required opencode dirs exist before binding ───────────────────────
-mkdir -p \
-  "$HOME/.config/opencode" \
-  "$HOME/.local/share/opencode" \
-  "$HOME/.cache/opencode"
-[[ -d "$HOME/.agents" ]] || mkdir -p "$HOME/.agents"
-
-# ── bwrap argument array ──────────────────────────────────────────────────────
-declare -a BWRAP=(
-  # Namespace isolation
-  --unshare-pid --unshare-ipc --unshare-uts
-  --die-with-parent
-  # --new-session: safe on kernel ≥6.2 (TIOCSTI blocked by default).
-  # Breaks Ctrl-Z job control for bwrap itself; opencode's TUI is unaffected
-  # because it manages its own terminal via ioctl, not job control.
-  --new-session
+declare -a B=(
+  --unshare-pid --unshare-ipc --unshare-uts --die-with-parent --new-session
   --hostname opencode-sandbox
-
-  # Kernel-provided pseudo-filesystems
-  --dev   /dev
-  --proc  /proc
-  --tmpfs /tmp
-
-  # Read-only system root
-  --ro-bind /usr /usr
-  --symlink usr/bin  /bin
-  --symlink usr/lib  /lib
-  --symlink usr/lib64 /lib64
-
-  # Network identity (needed for TLS and DNS)
-  --ro-bind-try /etc/ssl              /etc/ssl
-  --ro-bind-try /etc/ca-certificates  /etc/ca-certificates
-  --ro-bind     "$RESOLV_SRC"         /etc/resolv.conf
-  --ro-bind-try /etc/hosts            /etc/hosts
-  --ro-bind-try /etc/nsswitch.conf    /etc/nsswitch.conf
-  # Note: /etc/alternatives intentionally omitted — doesn't exist on stock Arch.
-  # Add --ro-bind-try /etc/alternatives /etc/alternatives if you use it.
-
-  # Synthetic identity files (no real /etc/passwd or /etc/group exposed)
-  --file "$PASSWD_FD" /etc/passwd
-  --file "$GROUP_FD"  /etc/group
-
-  # HOME is a private tmpfs — nothing leaks by default
+  --dev /dev --proc /proc --tmpfs /tmp
+  --ro-bind /usr /usr --symlink usr/bin /bin --symlink usr/lib /lib --symlink usr/lib64 /lib64
+  --ro-bind-try /etc/ssl /etc/ssl --ro-bind-try /etc/ca-certificates /etc/ca-certificates
+  --ro-bind "$RESOLV" /etc/resolv.conf --ro-bind-try /etc/hosts /etc/hosts
+  --ro-bind-try /etc/nsswitch.conf /etc/nsswitch.conf
+  # NOTE: /etc/alternatives deliberately NOT bound — it does not exist on stock Arch
+  #       and an unconditional --ro-bind of a missing source makes bwrap hard-fail.
+  --file "$PW" /etc/passwd --file "$GR" /etc/group
   --tmpfs "$HOME"
-
-  # Opencode binary location
   --ro-bind "$OPENCODE_DIR" /opt/opencode
-
-  # Opencode config (read-only — contains API keys; opencode only reads this)
-  --ro-bind "$HOME/.config/opencode"       "$HOME/.config/opencode"
-  --ro-bind-try "$HOME/.agents"            "$HOME/.agents"
-
-  # Opencode mutable state (read-write)
-  --bind "$HOME/.local/share/opencode"     "$HOME/.local/share/opencode"
-  --bind "$HOME/.cache/opencode"           "$HOME/.cache/opencode"
-
-  # Project directory — the point of all this
+  --ro-bind "$HOME/.config/opencode" "$HOME/.config/opencode"
+  --bind "$HOME/.local/share/opencode" "$HOME/.local/share/opencode"
+  --bind "$HOME/.cache/opencode" "$HOME/.cache/opencode"
   --bind "$PROJECT_DIR" "$PROJECT_DIR"
-
-  # XDG runtime dir (needed by some opencode internals)
-  --dir "/run/user/$(id -u)"
-  --setenv XDG_RUNTIME_DIR "/run/user/$(id -u)"
-
-  --setenv HOME "$HOME"
-  --setenv PATH "/opt/opencode:/usr/bin:/usr/local/bin"
+  --dir "/run/user/$(id -u)" --setenv XDG_RUNTIME_DIR "/run/user/$(id -u)"
+  --setenv HOME "$HOME" --setenv PATH "/opt/opencode:/usr/bin"
 )
-
-# ── SSH: public keys + known_hosts only ──────────────────────────────────────
+# SSH: public keys + known_hosts only; forward the agent socket, never private keys.
 if [[ -d "$HOME/.ssh" && ! -L "$HOME/.ssh" ]]; then
-  BWRAP+=(--dir "$HOME/.ssh")
-  [[ -f "$HOME/.ssh/known_hosts" ]] && \
-    BWRAP+=(--ro-bind "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts")
-  for pub in "$HOME/.ssh/"*.pub; do
-    [[ -f "$pub" && ! -L "$pub" ]] && BWRAP+=(--ro-bind "$pub" "$pub")
-  done
+  B+=(--dir "$HOME/.ssh")
+  [[ -f "$HOME/.ssh/known_hosts" ]] && B+=(--ro-bind "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts")
+  for p in "$HOME/.ssh/"*.pub; do [[ -f "$p" && ! -L "$p" ]] && B+=(--ro-bind "$p" "$p"); done
 fi
+[[ -n "${SSH_AUTH_SOCK:-}" && -S "${SSH_AUTH_SOCK:-}" ]] && \
+  B+=(--bind "$SSH_AUTH_SOCK" "$SSH_AUTH_SOCK" --setenv SSH_AUTH_SOCK "$SSH_AUTH_SOCK")
+[[ -f "$HOME/.gitconfig" ]] && B+=(--ro-bind "$HOME/.gitconfig" "$HOME/.gitconfig")
 
-# SSH agent forwarding (no private keys enter the sandbox)
-if [[ -n "${SSH_AUTH_SOCK:-}" && -S "$SSH_AUTH_SOCK" ]]; then
-  BWRAP+=(
-    --bind "$SSH_AUTH_SOCK" "$SSH_AUTH_SOCK"
-    --setenv SSH_AUTH_SOCK "$SSH_AUTH_SOCK"
-  )
-fi
-
-# ── Git config ────────────────────────────────────────────────────────────────
-[[ -f "$HOME/.gitconfig" ]] && BWRAP+=(--ro-bind "$HOME/.gitconfig" "$HOME/.gitconfig")
-
-# ── Conditional tool mounts ───────────────────────────────────────────────────
-# Add only what's installed; each block is self-documenting.
-command -v cargo >/dev/null && {
-  [[ -d "$HOME/.rustup"  ]] && BWRAP+=(--ro-bind "$HOME/.rustup"  "$HOME/.rustup")
-  [[ -d "$HOME/.cargo/bin" ]] && BWRAP+=(--ro-bind "$HOME/.cargo/bin" "$HOME/.cargo/bin")
-  [[ -f "$HOME/.cargo/config.toml" ]] && \
-    BWRAP+=(--ro-bind "$HOME/.cargo/config.toml" "$HOME/.cargo/config.toml")
-  # cargo registry: tmpfs so sandbox can download crates but host cache isn't exposed
-  [[ -d "$HOME/.cargo/registry" ]] && BWRAP+=(--tmpfs "$HOME/.cargo/registry")
-}
-command -v uv >/dev/null && \
-  [[ -d "$HOME/.config/uv" ]] && BWRAP+=(--ro-bind "$HOME/.config/uv" "$HOME/.config/uv")
-command -v npm >/dev/null && \
-  [[ -f "$HOME/.npmrc" ]] && BWRAP+=(--ro-bind "$HOME/.npmrc" "$HOME/.npmrc")
-
-# ── Launch ─────────────────────────────────────────────────────────────────────
-exec bwrap "${BWRAP[@]}" -- /opt/opencode/opencode "$@"
+exec bwrap "${B[@]}" -- /opt/opencode/opencode "$@"
