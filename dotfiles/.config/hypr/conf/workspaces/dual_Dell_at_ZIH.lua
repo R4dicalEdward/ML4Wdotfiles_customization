@@ -24,23 +24,23 @@
 -- └──────────┴────────────────┴────────────────────────────────────────┘
 
 -- Group 1: dev + notes + browser
-hl.workspace_rule({ workspace = "1",  monitor = "DP-10" })
+hl.workspace_rule({ workspace = "1",  monitor = "desc:Dell Inc. DELL P2725D H3LC074" })
 hl.workspace_rule({ workspace = "2",  monitor = "eDP-1" })
-hl.workspace_rule({ workspace = "3",  monitor = "DP-9"  })
+hl.workspace_rule({ workspace = "3",  monitor = "desc:Dell Inc. DELL P2725D H3KF074"  })
 
 -- Group 2: VDI + scratch + secrets
-hl.workspace_rule({ workspace = "9",  monitor = "DP-10" })
-hl.workspace_rule({ workspace = "5",  monitor = "DP-9"  })
+hl.workspace_rule({ workspace = "9",  monitor = "desc:Dell Inc. DELL P2725D H3LC074" })
+hl.workspace_rule({ workspace = "5",  monitor = "desc:Dell Inc. DELL P2725D H3KF074"  })
 hl.workspace_rule({ workspace = "4",  monitor = "eDP-1" })
 
 -- Group 3: scratch + music + comms
-hl.workspace_rule({ workspace = "7",  monitor = "DP-10" })
-hl.workspace_rule({ workspace = "12", monitor = "DP-9"  })
+hl.workspace_rule({ workspace = "7",  monitor = "desc:Dell Inc. DELL P2725D H3LC074" })
+hl.workspace_rule({ workspace = "12", monitor = "desc:Dell Inc. DELL P2725D H3KF074"  })
 hl.workspace_rule({ workspace = "6",  monitor = "eDP-1" })
 
 -- Group 4: research + mail + scratch
-hl.workspace_rule({ workspace = "10", monitor = "DP-10" })
-hl.workspace_rule({ workspace = "11", monitor = "DP-9"  })
+hl.workspace_rule({ workspace = "10", monitor = "desc:Dell Inc. DELL P2725D H3LC074" })
+hl.workspace_rule({ workspace = "11", monitor = "desc:Dell Inc. DELL P2725D H3KF074"  })
 hl.workspace_rule({ workspace = "8",  monitor = "eDP-1" })
 
 hl.workspace_rule({ workspace = "99",  monitor = "eDP-1" })

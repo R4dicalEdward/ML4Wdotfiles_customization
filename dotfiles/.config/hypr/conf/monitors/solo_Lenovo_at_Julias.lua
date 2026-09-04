@@ -23,7 +23,7 @@
 -- └─────┴──────────┴──────────┴────────────────┴────────────────┴──────────────┴─────────────────┘
 
 hl.monitor({
-	output = "HDMI-A-1",
+	output = "desc: Lenovo Group Limited P27h-20 V90D2YEX",
 	mode = "2560x1440@60",
 	position = "0x0",
 	scale = 1.0,

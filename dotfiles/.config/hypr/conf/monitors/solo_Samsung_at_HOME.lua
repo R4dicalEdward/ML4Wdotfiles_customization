@@ -76,7 +76,7 @@ local edp_y = math.floor((hdmi_layout_h - EDP_LAYOUT_H) / 2) + EDP_Y_NUDGE
 
 -- ── Apply ────────────────────────────────────────────────────────
 hl.monitor({
-    output   = "HDMI-A-1",
+    output   = "desc: Samsung Electric Company LC27G5xT H4ZR202347",
     mode     = HDMI_MODE,
     position = "0x0",
     scale    = p.hdmi_scale,

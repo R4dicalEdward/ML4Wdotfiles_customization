@@ -25,22 +25,23 @@
 -- └─────────┴──────────────────┴────────┴────────────────┴─────────────┘
 
 hl.monitor({
-	output = "DP-12",
+    output = "desc:Dell Inc. DELL P2725D H3LC074",
 	mode = "2560x1440@59.95",
 	position = "0x0",
 	scale = 1,
 })
 
 hl.monitor({
-	output = "DP-11",
+    output = "desc:Dell Inc. DELL P2725D H3KF074",
 	mode = "2560x1440@59.95",
 	position = "2560x0",
 	scale = 1,
 })
 
 hl.monitor({
-	output = "eDP-1",
+    output = "eDP-1",
 	mode = "1920x1200@60",
 	position = "5120x1000",
 	scale = 1.2,
 })
+
