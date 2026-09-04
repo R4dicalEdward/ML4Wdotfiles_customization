@@ -24,3 +24,5 @@ hl.window_rule({ match = { class = "chromium" },                workspace = "10"
 -- 90th group: VDI
 hl.window_rule({ match = { class = "Wfica" },                   workspace = "91" })
 hl.window_rule({ match = { class = "conncenter" },              workspace = "92" })
+
+hl.window_rule({ match = { class = "webex" },                   workspace = "99" })

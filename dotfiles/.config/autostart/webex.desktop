@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Webex
+Comment=Start Webex at session login
+Exec=/opt/Webex/bin/CiscoCollabHost
+TryExec=/opt/Webex/bin/CiscoCollabHost
+Icon=webex
+Terminal=false
+StartupNotify=false

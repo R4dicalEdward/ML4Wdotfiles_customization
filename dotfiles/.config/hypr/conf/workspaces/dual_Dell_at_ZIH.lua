@@ -42,3 +42,5 @@ hl.workspace_rule({ workspace = "6",  monitor = "eDP-1" })
 hl.workspace_rule({ workspace = "10", monitor = "DP-10" })
 hl.workspace_rule({ workspace = "11", monitor = "DP-9"  })
 hl.workspace_rule({ workspace = "8",  monitor = "eDP-1" })
+
+hl.workspace_rule({ workspace = "99",  monitor = "eDP-1" })

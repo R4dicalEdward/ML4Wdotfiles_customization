@@ -28,13 +28,15 @@ hl.window_rule({ match = { class = "md.obsidian.Obsidian" },                    
 
 -- 2nd group: secrets
 -- hl.window_rule({ match = { class = "kitty" }, workspace = "5" })  -- reserved, disabled
-hl.window_rule({ match = { class = "org.keepassxc.KeePassXC" },                 workspace = "4" })
+hl.window_rule({ match = { class = "org.keepassxc.KeePassXC" },                 workspace = "4"  })
 
 -- 3rd group: comms + VDI
-hl.window_rule({ match = { class = "Element" },                                 workspace = "6" })
-hl.window_rule({ match = { class = "Wfica" },                                   workspace = "9" })
+hl.window_rule({ match = { class = "Element" },                                 workspace = "6"  })
+hl.window_rule({ match = { class = "Wfica" },                                   workspace = "9"  })
 
 -- 4th group: research + mail + music
 hl.window_rule({ match = { class = "Zotero" },                                  workspace = "10" })
 hl.window_rule({ match = { class = "org.gnome.Evolution" },                     workspace = "11" })
-hl.window_rule({ match = { class = "Spotify" },                                 workspace = "8" })
+hl.window_rule({ match = { class = "Spotify" },                                 workspace = "8"  })
+
+hl.window_rule({ match = { class = "webex" },                                   workspace = "99" })
