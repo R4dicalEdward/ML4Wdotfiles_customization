@@ -10,5 +10,12 @@ if [ -z "$TEXT" ]; then
     exit 1
 fi
 
+# TODO: Find a better place for the Piper environment and model paths
+PIPER_ENV=~/Projects/dotfiles/personal_dotfiles/python-envs/piper-tts
+PIPER_BIN="$PIPER_ENV/bin/piper"
+PIPER_MODEL="$PIPER_ENV/piper-voices/de/de_DE/thorsten/medium/de_DE-thorsten-medium.onnx"
+
 # Piper TTS command
-echo "$TEXT" | piper-tts --model /usr/share/piper-voices/de/de_DE/thorsten/medium/de_DE-thorsten-medium.onnx --output-raw | aplay -r 22050 -f S16_LE -t raw -
+echo "$TEXT" | "$PIPER_BIN" --model "$PIPER_MODEL" --output-raw \
+  | aplay -r 22050 -f S16_LE -t raw -
+  

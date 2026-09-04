@@ -10,11 +10,12 @@ if [ -z "$TEXT" ]; then
     TEXT="No text found in clipboard for TTS."
 fi
 
-
+# TODO: Find a better place for the Piper environment and model paths
 PIPER_ENV=~/Projects/dotfiles/personal_dotfiles/python-envs/piper-tts
 PIPER_BIN="$PIPER_ENV/bin/piper"
-PIPER_MODEL="$PIPER_ENV/piper-voices/en_US-hfc_female-medium.onnx"
+PIPER_MODEL="$PIPER_ENV/piper-voices/en/en_US/hfc_female/medium/en_US-hfc_female-medium.onnx"
 
 # Piper TTS command
 echo "$TEXT" | "$PIPER_BIN" --model "$PIPER_MODEL" --output-raw \
   | aplay -r 22050 -f S16_LE -t raw -
+  

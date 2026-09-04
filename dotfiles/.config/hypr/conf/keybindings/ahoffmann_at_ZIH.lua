@@ -10,7 +10,7 @@
 dofile(os.getenv("HOME") .. "/.config/hypr/conf/keybindings/default.lua")
 local mainMod = "SUPER"
 -- Personal script root
-local PERSONAL_SCRIPTS = os.getenv("HOME") .. "/Projects/dotfiles/personal_dotfiles/Scripts"
+local PERSONAL_SCRIPTS = os.getenv("HOME") .. "/Scripts"
 
 -- Assumption: mainMod is defined in default.lua as a local. If it is not
 -- exported into the shared scope, redefine it here:
