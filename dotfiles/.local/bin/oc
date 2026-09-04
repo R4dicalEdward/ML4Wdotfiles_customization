@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+exec systemd-run --user \
+  --slice=opencode.slice \
+  --scope \
+  --property=MemoryMax=2G \
+  --property=TasksMax=512 \
+  --pty \
+  -- opencode-box "$@"
