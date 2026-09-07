@@ -1,0 +1,14 @@
+[Unit]
+Description=KeePassXC (started after SSH agent is ready)
+After=gcr-ssh-agent.socket graphical-session.target
+Wants=gcr-ssh-agent.socket
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/keepassxc
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target
