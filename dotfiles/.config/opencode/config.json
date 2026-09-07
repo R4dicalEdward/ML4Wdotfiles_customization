@@ -1,5 +1,8 @@
 {
-  "plugins": ["opencode-sandbox"],
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    "opencode-sandbox"
+  ],
   "experimental": {
     "sandbox": "bwrap"
   }

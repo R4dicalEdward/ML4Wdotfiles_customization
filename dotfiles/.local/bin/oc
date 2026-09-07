@@ -1,8 +1,10 @@
+# ~/.local/bin/oc  — the everyday entrypoint
 #!/usr/bin/env bash
-exec systemd-run --user \
-  --slice=opencode.slice \
-  --scope \
-  --property=MemoryMax=2G \
-  --property=TasksMax=512 \
-  --pty \
-  -- opencode-box "$@"
+set -euo pipefail
+key="$(secret-tool lookup service scadsai 2>/dev/null || true)"
+if [[ -z "$key" ]]; then
+  echo "Secret 'scadsai' not found in the keyring. Store it with: secret-tool store --label='scadsai' service scadsai" >&2
+  exit 1
+fi
+export SCADSAI_API_KEY="$key"
+exec opencode-box "$@"

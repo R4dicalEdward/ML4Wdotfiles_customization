@@ -3,9 +3,7 @@
     "denyRead": [
       "~/.ssh",
       "~/.gnupg",
-      "~/.config/opencode",
       "~/.aws",
-      "~/.azure",
       "~/.config/gcloud",
       "~/.kube",
       "~/.docker/config.json",
@@ -13,19 +11,20 @@
       "~/.env"
     ],
     "allowRead": [
-      "~/.ssh/id_ed25519.pub",
+      "~/.ssh/*.pub",
       "~/.gitconfig"
     ]
   },
   "network": {
     "allowedDomains": [
-      "api.anthropic.com",
-      "api.openai.com",
+      "llm.scads.ai",
       "registry.npmjs.org",
-      "crates.io",
       "pypi.org",
+      "crates.io",
       "github.com",
-      "*.github.com"
-    ]
+      "*.github.com",
+      "gitlab.hrz.tu-chemnitz.de"
+    ],
+    "deniedDomains": []
   }
 }
