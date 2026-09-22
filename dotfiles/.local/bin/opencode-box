@@ -5,7 +5,8 @@ set -euo pipefail
 command -v bwrap    >/dev/null || { echo "install bubblewrap" >&2; exit 1; }
 command -v opencode >/dev/null || { echo "opencode not in PATH" >&2; exit 1; }
 
-OPENCODE_DIR="$(dirname "$(command -v opencode)")"
+OPENCODE_BIN="$(realpath "$(command -v opencode)")"
+OPENCODE_DIR="$(dirname "$OPENCODE_BIN")"
 PROJECT_DIR="$(realpath "$PWD")"
 
 case "$PROJECT_DIR" in
@@ -40,10 +41,14 @@ declare -a B=(
   --bind "$HOME/.cache/opencode" "$HOME/.cache/opencode"
   --bind "$HOME/.local/state/opencode" "$HOME/.local/state/opencode"
   --bind "$PROJECT_DIR" "$PROJECT_DIR"
+  --chdir "$PROJECT_DIR"
   --dir "/run/user/$(id -u)" --setenv XDG_RUNTIME_DIR "/run/user/$(id -u)"
   --setenv HOME "$HOME" --setenv PATH "/opt/opencode:/usr/bin:/usr/local/bin"
   --setenv LANG "en_DK.UTF-8"
 )
+# Forward the ScaDS.AI key if the caller (oc) exported it.
+[[ -n "${SCADSAI_API_KEY:-}" ]] && B+=(--setenv SCADSAI_API_KEY "$SCADSAI_API_KEY")
+
 # SSH: public keys + known_hosts only; forward the agent socket, never private keys.
 if [[ -d "$HOME/.ssh" && ! -L "$HOME/.ssh" ]]; then
   B+=(--dir "$HOME/.ssh")

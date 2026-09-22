@@ -1,5 +1,5 @@
-# ~/.local/bin/oc  — the everyday entrypoint
 #!/usr/bin/env bash
+# ~/.local/bin/oc — the everyday entrypoint
 set -euo pipefail
 key="$(secret-tool lookup service scadsai 2>/dev/null || true)"
 if [[ -z "$key" ]]; then
