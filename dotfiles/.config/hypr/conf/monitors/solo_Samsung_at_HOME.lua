@@ -6,67 +6,62 @@
 --   HDMI-A-1: 2560 px / 600 mm × 25.4 ≈ 108.4 PPI
 --   ratio = 1.5 exactly
 --
--- eDP-1 is the scaling reference, held at 1.0 in all presets.
--- The Samsung is LESS dense than the laptop panel, so at equal
--- scales its content is 50 % larger. Shrinking it requires
--- scale < 1.0 (Hyprland renders a larger logical canvas and
--- downsamples) — this costs text sharpness. See preset notes.
+-- eDP-1 is fixed at scale 1.2 (not 1.0) to render its content
+-- slightly larger, per preference. 1.2 divides 1920x1200 evenly
+-- into 1600x1000 — a clean integer logical canvas, no rounding.
 --
 -- Mode is 2560x1440@59.95 in every preset — scale changes the
 -- logical canvas, not the signal. Do NOT use the advertised
 -- 3840x2160 mode: the panel is native 1440p and would downscale
 -- internally.
 --
--- ┌──────────────┬───────┬───────┬─────────────┬──────────┬──────────────┐
--- │ Preset       │ eDP-1 │ HDMI  │ HDMI layout │ eDP pos  │ HDMI content │
--- ├──────────────┼───────┼───────┼─────────────┼──────────┼──────────────┤
--- │ 1 · native   │  1.0  │  1.0  │ 2560 × 1440 │ 2560×150 │  50 % larger │
--- │   (default)  │       │       │  (sharpest) │          │              │
--- │ 2 · balanced │  1.0  │  0.8  │ 3200 × 1800 │ 3200×330 │  20 % larger │
--- │ 3 · matched  │  1.0  │  2/3  │ 3840 × 2160 │ 3840×510 │   0 % (exact)│
--- │              │       │       │  (softest)  │          │              │
--- └──────────────┴───────┴───────┴─────────────┴──────────┴──────────────┘
+-- ┌──────────────┬───────┬───────┬─────────────┬─────────────┬──────────────┐
+-- │ Preset       │ eDP-1 │ HDMI  │ HDMI layout │ eDP layout  │ HDMI content │
+-- ├──────────────┼───────┼───────┼─────────────┼─────────────┼──────────────┤
+-- │ 1 · sharp    │  1.2  │  1.0  │ 2560 × 1440 │ 1600 × 1000 │  25 % larger │
+-- │ 2 · matched  │  1.2  │  0.8  │ 3200 × 1800 │ 1600 × 1000 │   0 % exact  │
+-- │   (default)  │       │       │             │             │              │
+-- │ 3 · spacious │  1.2  │  2/3  │ 3840 × 2160 │ 1600 × 1000 │  20 % smaller│
+-- │              │       │       │  (softest)  │             │  (eDP larger)│
+-- └──────────────┴───────┴───────┴─────────────┴─────────────┴──────────────┘
 --
--- Preset 1 is the recommended default. The 50 % content delta is
--- largely cancelled by viewing distance: the external sits ~1.4×
--- further away than the laptop panel, so angular size is close to
--- matched in practice — and it is the only preset with no
--- fractional scaling anywhere.
---
--- Presets 2 and 3 trade sharpness for a literal size match. Use
--- them only if you compare the two screens side by side often.
+-- Preset 2 is now the recommended default: both scales (1.2, 0.8)
+-- are clean fractions and both logical canvases are integer —
+-- the only preset with an exact content match AND no rounding
+-- on either monitor.
 --
 -- eDP-1 is placed right of HDMI-A-1, 30 px below vertical centre.
 -- To switch preset: change PRESET below, then run `hyprctl reload`.
+-- To fine-tune eDP-1 size further, EDP_SCALE may be adjusted
+-- within 1.1–1.25; note this shifts which HDMI scale achieves
+-- an exact match (recompute via the ratio formula in comments
+-- above, or just eyeball it and iterate).
 
 -- ── Preset selector ──────────────────────────────────────────────
--- 1 = native    HDMI 1.0  — no fractional scaling  (default)
--- 2 = balanced  HDMI 0.8  — HDMI content 20 % larger
--- 3 = matched   HDMI 2/3  — exact content size match, softest
-local PRESET = 1
+-- 1 = sharp     HDMI 1.0    — HDMI content 25 % larger
+-- 2 = matched   HDMI 0.8    — exact content match (default)
+-- 3 = spacious  HDMI 2/3    — HDMI content 20 % smaller, softest
+local PRESET = 2
 
 -- ── Shared constants ─────────────────────────────────────────────
-local HDMI_MODE   = "2560x1440@59.95"
-local HDMI_PX_W   = 2560
-local HDMI_PX_H   = 1440
-local EDP_MODE    = "1920x1200@60"
-local EDP_SCALE   = 1.0
-local EDP_LAYOUT_H = 1200          -- 1200 / 1.0
+local HDMI_MODE    = "2560x1440@59.95"
+local HDMI_PX_W    = 2560
+local HDMI_PX_H    = 1440
+local EDP_MODE     = "1920x1200@60"
+local EDP_SCALE    = 1.2           -- within requested 1.1–1.25 range
+local EDP_LAYOUT_H = 1200 / EDP_SCALE  -- = 1000
 local EDP_Y_NUDGE  = 30            -- px below vertical centre
 
 -- ── Preset definitions ───────────────────────────────────────────
 local presets = {
-    [1] = { label = "native",   hdmi_scale = 1.0   },
-    [2] = { label = "balanced", hdmi_scale = 0.8   },
-    [3] = { label = "matched",  hdmi_scale = 2 / 3 },
+    [1] = { label = "sharp",    hdmi_scale = 1.0   },
+    [2] = { label = "matched",  hdmi_scale = 0.8   },
+    [3] = { label = "spacious", hdmi_scale = 2 / 3 },
 }
 
 -- ── Derive geometry ──────────────────────────────────────────────
 local p = presets[PRESET]
 
--- Logical canvas of HDMI-A-1 under the selected scale.
--- All three scales divide 2560x1440 into whole pixels:
---   1.0 → 2560x1440   0.8 → 3200x1800   2/3 → 3840x2160
 local hdmi_layout_w = math.floor(HDMI_PX_W / p.hdmi_scale + 0.5)
 local hdmi_layout_h = math.floor(HDMI_PX_H / p.hdmi_scale + 0.5)
 
@@ -83,7 +78,7 @@ hl.monitor({
 })
 
 hl.monitor({
-    output   = EDP_MODE and "eDP-1",
+    output   = "eDP-1",
     mode     = EDP_MODE,
     position = string.format("%dx%d", edp_x, edp_y),
     scale    = EDP_SCALE,
