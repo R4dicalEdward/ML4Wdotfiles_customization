@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Nheko
+Exec=nheko
+Icon=nheko
+Comment=Start Nheko Matrix client on login
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=10
