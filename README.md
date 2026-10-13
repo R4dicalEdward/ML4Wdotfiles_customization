@@ -25,34 +25,38 @@ belong directly in this repository.
 
 | Branch | Role |
 | --- | --- |
-| `main-upstream` | Read-only mirror of upstream ML4W. Never commit directly to it; it only moves by fast-forward from upstream. |
-| `main-local` | The local line of development: upstream plus committed personal customizations. |
-| `main` | Same line of development as `main-local`, kept under two names. |
-| `local/R4dicalEdwards-ml4w-adjustements` | Active long-lived working branch. All new work is based here and merged back into `main-local` when complete. |
+| `main-upstream` | Sole read-only mirror of upstream ML4W (`upstream/main`). Never commit to it; it moves only by fast-forward from upstream. |
+| `main-local` | Integration branch: the upstream mirror plus merged local work. It moves by merge from the working branch and is never fast-forwarded from upstream once it carries local content. |
+| `local/R4dicalEdwards-ml4w-adjustements` | Active long-lived working branch. All new work happens here; upstream syncs are merged here first, then promoted to `main-local`. |
 
 Remotes:
 
-- `origin`: private fork of this repository.
+- `origin`: private fork of this repository; currently empty (created but
+  never pushed), usable as a backup target.
 - `upstream`: the ML4W GitHub project.
 
 ### Syncing with upstream
 
 Upstream changes are merged, not rebased: history is preserved, and merge
-conflicts are resolved in favor of local customizations.
+conflicts are resolved in favor of local customizations. The sync is
+checkout-free: the mirror is updated by ref, and all conflict resolution
+happens on the working branch.
 
 ```bash
-# 1. Fast-forward the upstream mirror
-git fetch upstream
-git checkout main-upstream
-git merge --ff-only upstream/main
+# 0. Back up the working branch tip
+git branch backup/pre-sync-$(date +%F) local/R4dicalEdwards-ml4w-adjustements
 
-# 2. Merge upstream into the local line
-git checkout main-local
+# 1. Fast-forward the upstream mirror (refuses non-fast-forward)
+git fetch upstream main:main-upstream
+
+# 2. Merge the mirror into the working branch; resolve conflicts here
 git merge main-upstream
 
-# 3. Update the working branch
-git checkout local/R4dicalEdwards-ml4w-adjustements
-git merge main-local
+# 3. Validate (luac -p on touched .lua, Hyprland --verify-config), then
+#    commit the merge
+
+# 4. Promote the integration branch (fast-forward only)
+git push . HEAD:main-local
 ```
 
 Syncing is a deliberate, manual maintenance step. Do not combine it with
