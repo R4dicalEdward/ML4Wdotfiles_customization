@@ -7,15 +7,18 @@
   metadata, and committed personal customizations.
 - The `root/` tree contains system-level configuration and remains separate from
   normal user dotfiles installation.
-- Remotes: `origin` is the private fork; `upstream` is the ML4W GitHub project.
-  `main-upstream` is a read-only mirror of upstream.
+- Remotes: `origin` is the private fork (currently empty, default branch
+  `main`); `upstream` is the ML4W GitHub project.
+- `main-upstream` is the sole read-only upstream mirror: it moves only by
+  fast-forward from upstream and is never committed to directly.
+- `main-local` is the integration branch: the upstream mirror plus merged
+  local work. It moves only by merge from the working branch or by
+  fast-forward promotion (`git push . HEAD:main-local`); never fast-forward
+  it from upstream once it carries local content.
 - Base all work on the active working branch
   `local/R4dicalEdwards-ml4w-adjustements` (a long-lived branch off
   `main-local`). Do not switch or create branches, fetch, or merge without an
   explicit request in the current conversation.
-
-<!-- SUGGESTED: the branch and remotes bullets are new; the rest is
-     documented content retained from the previous file. -->
 
 ## Allowed Work
 
@@ -35,6 +38,8 @@ Unless the user explicitly requests the action in the current request:
 - Do not execute scripts under `setup/`.
 - Do not fetch from `upstream` or merge upstream changes; syncing is manual and
   user-driven.
+- Do not delete, rename, or force-update branches; do not rewrite history
+  (rebase, `reset --hard`, force-push) unless explicitly requested.
 - Do not read, list, create, modify, or delete anything under `/root` on the
   live system.
 - Do not edit installer profiles other than `hyprland-local.dotinst`.
@@ -66,8 +71,6 @@ invalid. Do not guess a replacement path or repair it silently.
   template and let the user create the `*.local` file themselves.
 - Never `git add` or commit `*.local` files.
 
-<!-- SUGGESTED: entire section is new. -->
-
 ## Sensitive Files — Hard Rules
 
 - Never read, print, copy, or commit secrets. This includes passwords, private
@@ -93,8 +96,6 @@ invalid. Do not guess a replacement path or repair it silently.
 - Report what changed and how it was verified. Never paste the contents of
   sensitive paths into the report.
 
-<!-- SUGGESTED: entire section is new. -->
-
 ## Git Workflow
 
 - Always write full Conventional Commit messages for new commits: include the
@@ -104,6 +105,12 @@ invalid. Do not guess a replacement path or repair it silently.
   revert, reshape, or omit user changes unless explicitly instructed.
 - Before committing, show a summary of the staged diff. Never stage untracked
   `*.local` files or anything matching the Sensitive Files rules.
-
-<!-- SUGGESTED: the third bullet is new; the first two are documented content
-     retained unchanged. -->
+- Before branch topology operations (upstream sync, merging into
+  `main-local`, branch deletion), create a backup ref of the working branch
+  tip, e.g. `backup/pre-sync-YYYY-MM-DD`.
+- Never commit directly to `main-upstream`; it moves only by fast-forward
+  from upstream (`git fetch upstream main:main-upstream`). `main-local` moves
+  only by merge from the working branch or fast-forward promotion
+  (`git push . HEAD:main-local`).
+- Before committing a merge, run the checks from "Verification After Changes"
+  on every file the merge touched.
