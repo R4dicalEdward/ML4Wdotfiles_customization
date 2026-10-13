@@ -230,11 +230,27 @@ FloatingWindow {
                         Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/ml4w/scripts/ml4w-hyprsysteminfo"])
                     }
                 }
+                ML4WMenuItem { 
+                    text: qsTr("Open .mydotfiles Folder") 
+                    onClicked: { 
+                        // Opens the dotfiles folder in the filemanager
+                        // configured in the dotfiles settings.
+                        Quickshell.execDetached(["bash", "-c", "$(cat ~/.config/ml4w/settings/filemanager) ~/.mydotfiles"])
+                    }
+                }
+                ML4WMenuItem { 
+                    text: qsTr("Open Backup Folder") 
+                    onClicked: { 
+                        // Opens the dotfiles backup folder in the filemanager
+                        // configured in the dotfiles settings.
+                        Quickshell.execDetached(["bash", "-c", "$(cat ~/.config/ml4w/settings/filemanager) ~/.mydotfiles/backups"])
+                    }
+                }
                 ML4WMenuSeparator {}
                 ML4WMenuItem { 
                     text: qsTr("Exit Hyprland") 
                     onClicked: {
-                        Quickshell.execDetached(["bash", "-c", "qs ipc call power toggle"])
+                        Quickshell.execDetached(["bash", "-c", "ml4w-powermenu toggle"])
                     }
                 }
 
@@ -498,7 +514,7 @@ FloatingWindow {
                         }
 
                         Button {
-                            text: "All keybindings"
+                            text: "All Keybinds"
 
                             onClicked: {
                                 Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/hypr/scripts/keybindings.sh"])

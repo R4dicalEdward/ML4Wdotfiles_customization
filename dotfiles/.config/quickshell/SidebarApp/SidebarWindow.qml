@@ -260,7 +260,7 @@ PanelWindow {
             anchors.margins: 20
             spacing: 20
 
-            // --- TOP BAR (Light/Dark, Screenshot & Color Picker) ---
+            // --- TOP BAR (Light/Dark, Screenshot, Color Picker & Keybinds) ---
             RowLayout {
                 Layout.fillWidth: true
                 spacing: 10
@@ -289,6 +289,15 @@ PanelWindow {
                 }
 
                 Item { Layout.fillWidth: true }
+
+                ML4WButton {
+                    text: "Keybinds"
+                    Layout.fillWidth: false
+                    onClicked: {
+                        root.isOpen = false
+                        Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/hypr/scripts/keybindings.sh"])
+                    }
+                }
             }
 
             Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.primary; opacity: 0.3 }
@@ -840,7 +849,7 @@ PanelWindow {
                                     }
                                 }
                                 ML4WMenuItem {
-                                    text: "Edit Settings"
+                                    text: "Edit configuration"
                                     // The statusbar's own settings file, created
                                     // on its first start, is meant to be edited
                                     // directly.
@@ -916,7 +925,7 @@ PanelWindow {
                                     }
                                 }
                             }
-                            // Polled like the Dock Autohide switch below, so the
+                            // Polled like the Dock switch below, so the
                             // state tracks changes made outside the sidebar (the
                             // SUPER + ALT + B keybinding).
                             Timer {
@@ -936,6 +945,48 @@ PanelWindow {
                                 : "qs ipc call statusbar autohideOff"
                                 console.log("Statusbar Autohide cmd: " + ipcCmd)
                                 Quickshell.execDetached(["bash", "-c", ipcCmd])
+                            }
+                        }
+                        Item { implicitWidth: 28 }
+                    }
+
+                    // --- LAUNCHER ---
+                    // Select which launcher ML4W OS uses. The choice is persisted
+                    // to ~/.config/ml4w/settings/launcher (read by ml4w-launcher).
+                    // On = Walker, Off = Rofi.
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Text { text: "Launcher"; color: Theme.primary; font.family: Theme.fontFamily; font.pixelSize: 16 }
+                        Item { Layout.fillWidth: true }
+                        Text {
+                            text: launcherSwitch.checked ? "Walker" : "Rofi"
+                            color: Theme.primary
+                            opacity: 0.7
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 14
+                            Layout.rightMargin: 8
+                        }
+                        ML4WSwitch {
+                            id: launcherSwitch
+                            property bool ready: false
+                            // Read the configured launcher (defaults to rofi).
+                            Process {
+                                command: ["bash", "-c", "l=$(tr -d '[:space:]' < ~/.config/ml4w/settings/launcher 2>/dev/null); [ \"$l\" = walker ] && echo 1 || echo 0"]
+                                running: root.isOpen
+                                stdout: StdioCollector {
+                                    onStreamFinished: {
+                                        launcherSwitch.checked = (this.text.trim() === "1")
+                                        launcherSwitch.ready = true
+                                    }
+                                }
+                            }
+                            onClicked: {
+                                if (!ready) return;
+                                let cmd = checked
+                                    ? "echo walker > ~/.config/ml4w/settings/launcher"
+                                    : "echo rofi > ~/.config/ml4w/settings/launcher"
+                                console.log("Launcher cmd: " + cmd)
+                                Quickshell.execDetached(["bash", "-c", cmd])
                             }
                         }
                         Item { implicitWidth: 28 }
@@ -980,8 +1031,8 @@ PanelWindow {
                                 // new state via IPC. `checked` already reflects
                                 // the post-click position.
                                 let ipcCmd = checked
-                                ? "qs ipc call dock enable"
-                                : "qs ipc call dock disable"
+                                ? "ml4w-dock enable"
+                                : "ml4w-dock disable"
                                 console.log("Dock cmd: " + ipcCmd)
                                 Quickshell.execDetached(["bash", "-c", ipcCmd])
                             }
@@ -1002,54 +1053,27 @@ PanelWindow {
                                         Quickshell.execDetached(["bash", "-c", "~/.config/ml4w/scripts/ml4w-reload-dock"])
                                     }
                                 }
-                            }
-                        }
-                    }
-
-                    // --- DOCK AUTOHIDE ---
-                    RowLayout {
-                        Layout.fillWidth: true
-                        Text { text: "Dock Autohide"; color: Theme.primary; font.family: Theme.fontFamily; font.pixelSize: 16 }
-                        Item { Layout.fillWidth: true }
-                        ML4WSwitch {
-                            id: dockAutohideSwitch
-                            property bool ready: false
-                            // Read the current state from the "autohide" flag in
-                            // the dock's settings file. A missing file or flag
-                            // counts as off, matching the dock's own default.
-                            Process {
-                                id: dockAutohideProc
-                                command: ["bash", "-c", "grep -q '\"autohide\"[[:space:]]*:[[:space:]]*true' ~/.config/ml4w-dock/config.json 2>/dev/null && echo 1 || echo 0"]
-                                stdout: StdioCollector {
-                                    onStreamFinished: {
-                                        console.log("Test for Dock Autohide: " + this.text.trim())
-                                        dockAutohideSwitch.checked = (this.text.trim() === "1")
-                                        dockAutohideSwitch.ready = true
+                                ML4WMenuItem {
+                                    text: "Settings"
+                                    // Opens the dock's own settings dialog
+                                    // (autohide lives there now).
+                                    onClicked: {
+                                        root.isOpen = false
+                                        Quickshell.execDetached(["bash", "-c", "ml4w-dock settings"])
+                                    }
+                                }
+                                ML4WMenuItem {
+                                    text: "Edit configuration"
+                                    // The dock opens its own settings file in
+                                    // dock.editorCommand (xdg-open without one),
+                                    // the same as its menu's entry.
+                                    onClicked: {
+                                        root.isOpen = false
+                                        Quickshell.execDetached(["bash", "-c", "ml4w-dock edit"])
                                     }
                                 }
                             }
-                            // Polled like the Dock switch above, so the state
-                            // tracks changes made outside the sidebar.
-                            Timer {
-                                interval: 1000
-                                repeat: true
-                                running: root.isOpen
-                                triggeredOnStart: true
-                                onTriggered: dockAutohideProc.running = true
-                            }
-                            onClicked: {
-                                if (!ready) return;
-                                // The dock owns the file write; just tell it the
-                                // new state via IPC. `checked` already reflects
-                                // the post-click position.
-                                let ipcCmd = checked
-                                ? "qs ipc call dock autohideOn"
-                                : "qs ipc call dock autohideOff"
-                                console.log("Dock Autohide cmd: " + ipcCmd)
-                                Quickshell.execDetached(["bash", "-c", ipcCmd])
-                            }
                         }
-                        Item { implicitWidth: 28 }
                     }
 
                     // --- GAMEMODE ---
