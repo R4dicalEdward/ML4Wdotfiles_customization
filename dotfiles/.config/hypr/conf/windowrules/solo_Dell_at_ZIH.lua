@@ -3,7 +3,7 @@
 -- Rules are evaluated top-to-bottom; order matters.
 
 -- 1st group: dev + browser
-hl.window_rule({ match = { class = "code" },                    workspace = "1" })
+hl.window_rule({ match = { class = "com.microsoft.VSCode" },    workspace = "1" })
 hl.window_rule({ match = { class = "firefox" },                 workspace = "2" })
 
 -- 2nd group: notes + secrets

@@ -22,7 +22,7 @@
 -- └──────────┴──────────┴─────────────────────────┴──────────────────┘
 
 -- 1st group: dev + notes + browser
-hl.window_rule({ match = { class = "code" },                                    workspace = "1" })
+hl.window_rule({ match = { class = "com.microsoft.VSCode" },                    workspace = "1" })
 hl.window_rule({ match = { class = "firefox" },                                 workspace = "2" })
 hl.window_rule({ match = { class = "md.obsidian.Obsidian" },                    workspace = "3" })
 
