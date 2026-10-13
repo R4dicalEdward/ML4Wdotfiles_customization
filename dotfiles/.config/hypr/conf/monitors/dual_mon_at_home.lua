@@ -63,7 +63,7 @@ local EDP_Y_NUDGE   = 30   -- px below vertical centre against LG
 -- ── Preset definitions ───────────────────────────────────────────
 local presets = {
     [1] = { label = "matched", samsung_scale = 0.8, lg_scale = 1.2, edp_scale = 1.2 },
-    [2] = { label = "sharp",   samsung_scale = 1.0, lg_scale = 1.0, edp_scale = 1.0 },
+    [2] = { label = "sharp",   samsung_scale = 1.0, lg_scale = 1.5, edp_scale = 1.0 },
 }
 
 -- ── Derive geometry ──────────────────────────────────────────────
